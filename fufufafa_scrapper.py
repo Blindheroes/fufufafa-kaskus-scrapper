@@ -2,8 +2,7 @@ from seleniumwire import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
-import pandas as pd
-import datetime as dt
+from datetime import datetime
 import csv
 
 service = Service(ChromeDriverManager().install())
@@ -61,14 +60,35 @@ def check(article_title, article_owner, article_date, fu_reply):
         print()
 
 
+# def save_to_csv(article_title, article_owner, article_date, fu_reply):
+#     with open('fufufafa.csv', mode='w', newline='') as file:
+#         writer = csv.writer(file)
+#         writer.writerow(["Date", "Owner", "Title", "FU Reply"])
+#         # convert date to datetime
+#         for i in range(len(article_title)):
+#             writer.writerow([article_date[i], article_owner[i],
+#                             article_title[i], fu_reply[i]])
+
+
 def save_to_csv(article_title, article_owner, article_date, fu_reply):
-    with open('fufufafa.csv', mode='w', newline='') as file:
+    with open('fufufafa.csv', mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(["Date", "Owner", "Title", "FU Reply"])
-        # convert date to datetime
         for i in range(len(article_title)):
-            writer.writerow([article_date[i], article_owner[i],
+            try:
+                # Convert the date string to datetime object with the correct format
+                date_obj = datetime.strptime(article_date[i], '%d-%m-%Y %H:%M')
+            except ValueError:
+                # If the format doesn't match, leave it as is
+                date_obj = article_date[i]
+
+            writer.writerow([date_obj, article_owner[i],
                             article_title[i], fu_reply[i]])
+
+
+article_title, article_owner, article_date, fu_reply = fufufafa_scrapper(
+    driver, 50)
+save_to_csv(article_title, article_owner, article_date, fu_reply)
 
 
 article_title, article_owner, article_date, fu_reply = fufufafa_scrapper(
