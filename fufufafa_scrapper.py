@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import pandas as pd
+import datetime as dt
 import csv
 
 service = Service(ChromeDriverManager().install())
@@ -73,4 +74,3 @@ def save_to_csv(article_title, article_owner, article_date, fu_reply):
 article_title, article_owner, article_date, fu_reply = fufufafa_scrapper(
     driver, 50)
 save_to_csv(article_title, article_owner, article_date, fu_reply)
-
